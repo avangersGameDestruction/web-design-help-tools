@@ -13,4 +13,15 @@ function clickedItem(item, index) {
 
     if (activeItem == item) { return; }
     if (activeItem) { activeItem.classList.remove("active"); }
+
+    item.classList.add("active");
+    body.style.backgroundColor = bgColorsBody[index];
+    activeItem = item;
+    offsetMenuBorder(activeItem, menuBorder);
+}
+
+function offsetMenuBorder(element, menuBorder) {
+    const offsetActiveItem = element.getBoundingClientRect();
+    const left = Math.floor(offsetActiveItem.left - menu.offsetLeft - (menuBorder.offsetWidth - offsetActiveItem.width) / 2) + "px";
+    menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
 }
