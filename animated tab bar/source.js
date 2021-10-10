@@ -25,3 +25,14 @@ function offsetMenuBorder(element, menuBorder) {
     const left = Math.floor(offsetActiveItem.left - menu.offsetLeft - (menuBorder.offsetWidth - offsetActiveItem.width) / 2) + "px";
     menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
 }
+
+offsetMenuBorder(activeItem, menuBorder);
+
+menuItems.forEach((item, index) => {
+    item.addEventListener("click", () => clickItem(item, index));
+})
+
+window.addEventListener("resize", () => {
+    offsetMenuBorder(activeItem, menuBorder);
+    menu.style.setProperty("--timeOut", "none");
+});
