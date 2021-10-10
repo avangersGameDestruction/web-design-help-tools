@@ -72,4 +72,32 @@ var RadialProgress = function(size, barSize, barColor, backgroundColor, textColo
         'clip: rect(0px, ' + size / 2 + 'px, ' + size + 'px, 0px);' +
         'background-color: ' + barColor + ';' +
         '}';
+
+    document.body.appendChild(this.radialProgress);
+
+    this.remove = function() {
+        var self = this;
+        var scale = 1;
+        var deltaScale = 0.1 / 10;
+
+        function step() {
+            scale += deltaScale;
+            scale = (scale < 0) ? 0 : scale;
+            self.radialProgress.style.transform = 'scale(' + scale + ')';
+
+            if (scale > 1.1) {
+                deltaScale = -1.1 / 8;
+            }
+
+            if (scale > 0) {
+                requestAnimationFrame(step);
+            } else {
+                document.getElementsByTagName('head')[0].removeChild(self.style);
+                document.body.removeChild(self.radialProgress);
+            }
+        }
+
+        requestAnimationFrame(step);
+    };
+
 }
