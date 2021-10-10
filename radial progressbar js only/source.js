@@ -1,17 +1,16 @@
-var RadialProgress = function(size, barSize, barColor, backgroundColor, textColor, zIndex) {
+var RadialProgress = function(size, barSize, barColor, backgroundColor, textColor, zIndex) { // jshint ignore:line
     this.radialProgress = document.createElement('div');
     this.style = document.createElement('style');
     this.progress = 0;
-
     var requestAnimationFrame = window.requestAnimationFrame ||
-        window.mozAnimationFrame ||
-        window.webkitAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
         window.msRequestAnimationFrame;
 
     barSize = (barSize % 2 === 1) ? (barSize + 1) : barSize;
     var innerSize = size - barSize;
-    var innerMargine = barSize / 2;
+    var innerMargin = barSize / 2;
 
     this.radialProgress.className = 'radial-progress';
     this.radialProgress.innerHTML = '<div class="inner-circle">' +
@@ -73,6 +72,7 @@ var RadialProgress = function(size, barSize, barColor, backgroundColor, textColo
         'background-color: ' + barColor + ';' +
         '}';
 
+    document.getElementsByTagName('head')[0].appendChild(this.style);
     document.body.appendChild(this.radialProgress);
 
     this.remove = function() {
@@ -100,4 +100,61 @@ var RadialProgress = function(size, barSize, barColor, backgroundColor, textColo
         requestAnimationFrame(step);
     };
 
+    this.setProgress = function(progress, duration) {
+        progress = (progress > 100) ? 100 : progress;
+        var self = this;
+        var $maskFull = this.radialProgress.getElementsByClassName('mask full')[0];
+        var $fill = this.radialProgress.getElementsByClassName('fill');
+        var $fillFix = this.radialProgress.getElementsByClassName('fill fix')[0];
+        var $progress = this.radialProgress.getElementsByClassName('progress')[0];
+        var deltaProgress = (progress - this.progress) / (duration * 60);
+
+        function step() {
+            self.progress += deltaProgress;
+            self.progress = (self.progress > progress) ? progress : self.progress;
+            var rotate = self.progress * 1.8;
+            $maskFull.style.transform = 'rotate(' + rotate + 'deg)';
+            $progress.innerHTML = self.progress.toFixed() + '%';
+
+            for (var i = 0; i < $fill.length; ++i) {
+                $fill[i].style.transform = 'rotate(' + rotate + 'deg)';
+            }
+
+            $fillFix.style.transform = 'rotate(' + 2 * rotate + 'deg)';
+
+            if (self.progress < progress) {
+                requestAnimationFrame(step);
+            }
+
+            if (self.progress === 100) {
+                setTimeout(function() {
+                    self.remove();
+                }, 1000);
+            }
+        }
+
+        requestAnimationFrame(step);
+    };
+};
+
+function createProgress() {
+    var progress = new RadialProgress(150, 8, '#0095DD', '#FFF', '#000', 10);
+
+    setTimeout(function() {
+        progress.setProgress(50, 0.5);
+    }, 1000);
+
+    setTimeout(function() {
+        progress.setProgress(60, 0.5);
+    }, 3000);
+
+    setTimeout(function() {
+        progress.setProgress(80, 0.5);
+    }, 5000);
+
+    setTimeout(function() {
+        progress.setProgress(100, 0.5);
+    }, 7000);
 }
+
+createProgress();
