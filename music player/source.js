@@ -41,3 +41,29 @@ function closePlayer() {
     playerControls.classList.remove("move");
     slider.classList.remove("open-slider");
 }
+
+function next(index) {
+    count = index || count;
+    if (count == sliderContentLength) {
+        count = count;
+        return;
+    }
+    left = (count + 1) * sliderWidth;
+    left = Math.min(left, (sliderContentLength) * sliderWidth);
+    sliderContent.style.transform = `translate3d(-${left}%, 0, 0)`;
+    count++;
+    run();
+}
+
+function back(index) {
+    count = index || count;
+    if (count == 0) {
+        count = count;
+        return;
+    }
+    left = (count - 1) * sliderWidth;
+    left = Math.max(0, left);
+    sliderContent.style.transform = `translate3d(-${left}%, 0, 0)`;
+    count--;
+    run();
+}
