@@ -67,3 +67,26 @@ function back(index) {
     count--;
     run();
 }
+
+function changeSliderContext() {
+    sliderContext.style.animationName = "opacity";
+
+    sliderName.textContent = playerPlayList[count].querySelector(".player__title").textContent;
+    sliderTitle.textContent = playerPlayList[count].querySelector(".player__song-name").textContent;
+
+    if (sliderName.textContent.length > 16) {
+        const textWrap = document.createElement("span");
+        textWrap.className = "text-wrap";
+        textWrap.innerHTML = sliderName.textContent + "   " + sliderName.textContent;
+        sliderName.innerHTML = "";
+        sliderName.append(textWrap);
+    }
+
+    if (sliderTitle.textContent.length >= 18) {
+        const textWrap = document.createElement("span");
+        textWrap.className = "text-wrap";
+        textWrap.innerHTML = sliderTitle.textContent + "    " + sliderTitle.textContent;
+        sliderTitle.innerHTML = "";
+        sliderTitle.append(textWrap);
+    }
+}
