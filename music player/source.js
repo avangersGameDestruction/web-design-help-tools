@@ -35,3 +35,9 @@ function openPlayer() {
     playerControls.classList.add("move");
     slider.classList.add("open-slider");
 }
+
+function closePlayer() {
+    playerHeader.classList.remove("open-header");
+    playerControls.classList.remove("move");
+    slider.classList.remove("open-slider");
+}
