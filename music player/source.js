@@ -29,3 +29,9 @@ let count = 0;
 let song = playerSongs[count];
 let isPlay = false;
 let isMove = false;
+
+function openPlayer() {
+    playerHeader.classList.add("open-header");
+    playerControls.classList.add("move");
+    slider.classList.add("open-slider");
+}
